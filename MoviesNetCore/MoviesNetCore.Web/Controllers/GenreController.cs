@@ -34,5 +34,19 @@ namespace MoviesNetCore.Web.Controllers
 
             return View(viewModelList);
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(GenreViewModel genre)
+        {
+            Genre newGenre = new Genre();
+            newGenre.Name = genre.Nombre;
+            this.genreRepository.Insert(newGenre);
+            return RedirectToAction("Index", "Genre");
+        }
     }
 }

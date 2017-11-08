@@ -35,5 +35,21 @@ namespace MoviesNetCore.Repository
         {
             throw new System.NotImplementedException();
         }
+
+        void IGenreRepository.Delete(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        Genre IGenreRepository.Get(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        void IGenreRepository.Insert(Genre genero)
+        {
+            this.db.Genres.Add(genero);
+            this.db.SaveChanges();
+        }
     }
 }

@@ -11,6 +11,8 @@ namespace MoviesNetCore.Repository
 
         void Update(Genre movie);
 
+        void Insert(Genre genero);
+
         void Delete(int id);
     }
 }

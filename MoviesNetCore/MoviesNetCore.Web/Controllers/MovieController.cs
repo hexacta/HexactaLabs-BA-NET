@@ -63,7 +63,8 @@ namespace MoviesNetCore.Web.Controllers
             this.movieRepository.Delete(model.Id);
             return this.RedirectToAction("Index", "Movie");
         }
-
+        
+        [HttpPost]
         public ActionResult Edit(MovieViewModel movieViewModel)
         {
            if (ModelState.IsValid)
