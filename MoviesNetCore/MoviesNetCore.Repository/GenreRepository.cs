@@ -13,14 +13,14 @@ namespace MoviesNetCore.Repository
             this.db = db;
         }
 
-        public void Delete(int id)
+        public Genre Get(int id)
         {
             throw new System.NotImplementedException();
         }
 
-        public Genre Get(int id)
+        public Genre GetById(int id)
         {
-            throw new System.NotImplementedException();
+            return this.db.Genres.Find(id);
         }
 
         public IEnumerable<Genre> List()
@@ -33,17 +33,15 @@ namespace MoviesNetCore.Repository
 
         public void Update(Genre genre)
         {
-            throw new System.NotImplementedException();
+            this.db.Genres.Update(genre);
+            this.db.SaveChanges();
         }
 
-        void IGenreRepository.Delete(int id)
+        public void Delete(int id)
         {
-            throw new System.NotImplementedException();
-        }
-
-        Genre IGenreRepository.Get(int id)
-        {
-            throw new System.NotImplementedException();
+            Genre genre = this.GetById(id);
+            this.db.Genres.Remove(genre);
+            this.db.SaveChanges();
         }
 
         void IGenreRepository.Insert(Genre genero)

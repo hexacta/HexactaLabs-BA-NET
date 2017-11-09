@@ -9,10 +9,12 @@ namespace MoviesNetCore.Repository
 
         IEnumerable<Genre> List();
 
-        void Update(Genre movie);
+        void Update(Genre genre);
 
         void Insert(Genre genero);
 
         void Delete(int id);
+
+        Genre GetById(int id);
     }
 }

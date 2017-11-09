@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MoviesNetCore.Web.Models
 {
@@ -27,5 +28,7 @@ namespace MoviesNetCore.Web.Models
         public int? Runtime { get; set; }
 
         public ICollection<string> Genres { get; set; }
+
+        public SelectList AvailableGenres { get; set; }
     }
 }

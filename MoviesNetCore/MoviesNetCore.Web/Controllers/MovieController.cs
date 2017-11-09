@@ -10,9 +10,14 @@ namespace MoviesNetCore.Web.Controllers
     public class MovieController : Controller
     {
         private readonly IMovieRepository movieRepository;
-        public MovieController(IMovieRepository movieRepository)
+        private readonly IGenreRepository genreRepository;
+
+        public MovieController(
+            IMovieRepository movieRepository,
+            IGenreRepository genreRepository)
         {
             this.movieRepository = movieRepository;
+            this.genreRepository = genreRepository;
         }
 
         public IActionResult Index()
@@ -24,6 +29,8 @@ namespace MoviesNetCore.Web.Controllers
 
         public IActionResult Create()
         {
+            IEnumerable<Genre> genres = this.genreRepository.List();
+
             return View();
         }
 
