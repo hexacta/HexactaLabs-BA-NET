@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using MoviesNetCore.Model;
 
 namespace MoviesNetCore.Repository
@@ -27,8 +28,10 @@ namespace MoviesNetCore.Repository
 
         public Movie Get(int id)
         {
+            this.db.Movies.Include(x => x.MovieGenres).Load();
+
             return this
-                .db
+                .db                
                 .Movies
                 .Find(id);
         }
@@ -43,12 +46,20 @@ namespace MoviesNetCore.Repository
 
         public void Add(Movie movie)
         {           
-            this.db.Movies.Add(movie);   
+            this.db.Movies.Add(movie);
+
+            this.db.MovieGenre.AddRange(movie.MovieGenres);
+
             this.db.SaveChanges();      
         }
 
         public void Update(Movie movie)
         {
+            var movieGenres = this.db.MovieGenre.Where(x => x.MovieId == movie.Id);
+            
+            this.db.MovieGenre.RemoveRange(movieGenres);
+            this.db.MovieGenre.AddRange(movie.MovieGenres);           
+
             this.db.Movies.Update(movie);
             this.db.SaveChanges();      
         }

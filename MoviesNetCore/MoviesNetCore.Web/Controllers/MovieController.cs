@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MoviesNetCore.Model;
 using MoviesNetCore.Repository;
 using MoviesNetCore.Web.Models;
@@ -30,8 +32,11 @@ namespace MoviesNetCore.Web.Controllers
         public IActionResult Create()
         {
             IEnumerable<Genre> genres = this.genreRepository.List();
+            
+            MovieViewModel viewModel = new MovieViewModel();
+            viewModel.AvailableGenres = new SelectList(genres, "Id", "Name");
 
-            return View();
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -52,8 +57,11 @@ namespace MoviesNetCore.Web.Controllers
         public ActionResult Edit(string id)
         {            
             Movie movie = this.movieRepository.Get(int.Parse(id));
+            IEnumerable<Genre> genres = this.genreRepository.List();         
 
             MovieViewModel model = this.CreateViewModel(movie);
+            model.AvailableGenres = new SelectList(genres, "Id", "Name");
+
             return View(model);
         }
 
@@ -78,6 +86,7 @@ namespace MoviesNetCore.Web.Controllers
             {
                 Movie movie = this.CreateMovieModel(movieViewModel);
                 movie.Id = movieViewModel.Id;
+                
                 this.movieRepository.Update(movie);
 
                 return RedirectToAction("Index", "Movie");
@@ -109,6 +118,7 @@ namespace MoviesNetCore.Web.Controllers
             movieViewModel.ReleaseDate = item.ReleaseDate;
             movieViewModel.Runtime = item.Runtime;
             movieViewModel.CoverLink = item.CoverLink;
+            movieViewModel.Genres = item.MovieGenres.Select(x => x.GenreId.ToString()).ToList();
 
             return movieViewModel;
         }
@@ -122,6 +132,12 @@ namespace MoviesNetCore.Web.Controllers
             movie.Plot = movieViewModel.Plot;
             movie.ReleaseDate = movieViewModel.ReleaseDate;
             movie.Runtime = movieViewModel.Runtime;
+            movie.MovieGenres = movieViewModel.Genres.Select(genreId => new MovieGenre
+                {
+                    GenreId = Convert.ToInt32(genreId),
+                    MovieId = movieViewModel.Id
+                }).ToList();
+
             return movie;
         }
 

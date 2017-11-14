@@ -14,11 +14,25 @@ namespace MoviesNetCore.Repository
 
         public DbSet<Genre> Genres { get; set; }
 
+        public DbSet<MovieGenre> MovieGenre { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .Entity<MovieGenre>()
                 .HasKey(x => new { x.MovieId, x.GenreId });
+
+            modelBuilder
+                .Entity<MovieGenre>()
+                .HasOne(mg => mg.Movie)
+                .WithMany(m => m.MovieGenres)
+                .HasForeignKey(mg => mg.MovieId);
+
+            modelBuilder
+                .Entity<MovieGenre>()
+                .HasOne(mg => mg.Genre)
+                .WithMany(g => g.MovieGenres)
+                .HasForeignKey(mg => mg.GenreId);            
         }
     }
 }
